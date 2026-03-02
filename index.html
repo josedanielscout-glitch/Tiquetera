@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiquetera de Beneficios UCN</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS Personalizado para Efectos 3D y Animaciones -->
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        @keyframes bounceSlow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes breatheGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(79, 70, 229, 0.4), 0 10px 20px -5px rgba(79, 70, 229, 0.3); }
+            50% { box-shadow: 0 0 35px rgba(124, 58, 237, 0.8), 0 15px 25px -5px rgba(124, 58, 237, 0.5); }
+        }
+        
+        /* Nuevas animaciones continuas para los íconos estáticos */
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(4deg); }
+        }
+        @keyframes wiggleIcon {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+        }
+        @keyframes heartbeatIcon {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.15); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.15); }
+            70% { transform: scale(1); }
+        }
+        
+        .animate-pulse-glow { animation: pulseGlow 4s ease-in-out infinite; }
+        .animate-bounce-slow { animation: bounceSlow 3s ease-in-out infinite; }
+        .active-filter-btn { animation: breatheGlow 2.5s ease-in-out infinite; }
+        
+        /* Clases para aplicar las nuevas animaciones */
+        .animate-float-icon { animation: floatIcon 3s ease-in-out infinite; }
+        .animate-wiggle-icon { animation: wiggleIcon 2.5s ease-in-out infinite; }
+        .animate-heartbeat-icon { animation: heartbeatIcon 2s ease-in-out infinite; }
+        
+        .card-3d-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+        }
+        .card-3d-hover:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 30px 60px -12px rgba(79, 70, 229, 0.25), 
+                        0 18px 36px -18px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Esferas 3D CSS */
+        .sphere-3d {
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 60%, transparent 80%);
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.2), 10px 10px 20px rgba(0,0,0,0.1);
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#f4f7f9] font-sans text-slate-800 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+
+    <!-- Header Interactivo 3D -->
+    <header class="relative w-full h-[500px] flex items-center justify-center overflow-hidden perspective-1000">
+        <!-- Imágenes de Fondo Unsplash (Slider) -->
+        <div class="absolute inset-0 z-0 bg-slate-900">
+            <img src="https://images.unsplash.com/photo-1557672172-298e090bd0f1?auto=format&fit=crop&w=2000&q=80" alt="Innovación UCN 1" class="slider-img absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] ease-in-out opacity-100 scale-105" />
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" alt="Innovación UCN 2" class="slider-img absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] ease-in-out opacity-0 scale-100" />
+            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2000&q=80" alt="Innovación UCN 3" class="slider-img absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] ease-in-out opacity-0 scale-100" />
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=2000&q=80" alt="Innovación UCN 4" class="slider-img absolute inset-0 w-full h-full object-cover transition-all duration-[1500ms] ease-in-out opacity-0 scale-100" />
+            
+            <!-- Overlay Degradado Profundo (Se mantiene fijo sobre las imágenes) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/90 via-purple-900/80 to-blue-900/70 mix-blend-multiply z-10"></div>
+        </div>
+
+        <!-- Elementos 3D Estáticos en el Header -->
+        <div class="absolute top-1/4 left-10 w-32 h-32 bg-indigo-500/30 rounded-full blur-xl z-0"></div>
+        <div class="absolute bottom-1/4 right-20 w-48 h-48 bg-purple-500/30 rounded-full blur-2xl z-0"></div>
+        
+        <!-- Esfera 3D decorativa -->
+        <div class="absolute top-20 right-1/4 w-24 h-24 bg-gradient-to-br from-pink-400 to-indigo-600 sphere-3d z-10 opacity-80"></div>
+        <div class="absolute bottom-10 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 sphere-3d z-10 opacity-70"></div>
+
+        <div id="header-content" class="relative z-20 text-center max-w-4xl px-6 transition-all duration-1000 transform translate-y-10 opacity-0">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-cyan-100 drop-shadow-sm">
+                Tiquetera de Beneficios
+            </h1>
+            <p class="text-xl md:text-2xl text-indigo-50 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md backdrop-blur-sm bg-black/10 p-4 rounded-2xl border border-white/5">
+                Beneficios pensados para cuidarte, acompañarte y celebrar los momentos más especiales.
+            </p>
+        </div>
+        
+        <!-- Ola separadora en CSS puro (SVG) -->
+        <div class="absolute bottom-0 w-full overflow-hidden leading-none z-10 transform translate-y-[1px]">
+            <svg class="relative block w-full h-[60px] md:h-[100px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.2,192.82,106.88Z" fill="#f4f7f9"></path>
+            </svg>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12 relative z-20 -mt-10">
+        
+        <!-- Filtros Innovadores -->
+        <div class="flex flex-wrap justify-center gap-4 mb-16 relative">
+            <div class="absolute inset-0 bg-indigo-500/5 blur-3xl -z-10 rounded-full"></div>
+            <div id="filter-buttons" class="flex flex-wrap justify-center gap-4 relative z-10 w-full">
+                <!-- Los botones se generan dinámicamente con JS -->
+            </div>
+        </div>
+
+        <!-- Cuadrícula de Beneficios 3D -->
+        <div id="benefits-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20 perspective-1000">
+            <!-- Los beneficios se generan dinámicamente con JS -->
+        </div>
+
+        <!-- Sección Otros Beneficios - Estilo Innovador -->
+        <div class="mb-24 relative rounded-[2rem] bg-white border border-slate-100 shadow-xl overflow-hidden group/container">
+            <!-- Fondo interactivo y colorido -->
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 -z-10"></div>
+            <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-pink-300/20 to-purple-300/20 rounded-full blur-3xl group-hover/container:scale-110 transition-transform duration-1000"></div>
+            <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-300/20 to-blue-300/20 rounded-full blur-3xl group-hover/container:scale-110 transition-transform duration-1000"></div>
+            
+            <div class="p-8 md:p-12 relative z-10">
+                <div class="flex items-center gap-4 mb-10 border-b border-slate-100 pb-6">
+                    <div class="w-16 h-16 bg-white rounded-2xl shadow-[0_8px_16px_rgba(0,0,0,0.08)] flex items-center justify-center animate-bounce-slow border border-slate-100">
+                        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Sparkles.png" alt="Sparkles" class="w-10 h-10 object-contain drop-shadow-md" />
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-purple-600 tracking-tight">Otros beneficios:</h2>
+                </div>
+                
+                <div id="other-benefits-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+                    <!-- Los otros beneficios se generan dinámicamente con JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Caja de Información Importante - Diseño Isométrico/3D -->
+        <div class="relative perspective-1000 mb-10">
+            <div class="absolute inset-0 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-[2rem] transform rotate-1 scale-105 opacity-20 blur-xl"></div>
+            
+            <div class="bg-gradient-to-br from-slate-900 to-indigo-950 border border-indigo-800/50 rounded-[2rem] p-10 md:p-14 relative overflow-hidden shadow-2xl">
+                <!-- Esferas de fondo -->
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl"></div>
+                <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10">
+                    <div class="flex items-center gap-4 mb-10">
+                        <div class="p-4 bg-indigo-500/20 border border-indigo-400/30 rounded-2xl backdrop-blur-md">
+                            <i data-lucide="info" class="w-8 h-8 text-indigo-300"></i>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Información importante</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <div class="group glass-panel !bg-white/5 !border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                                <div class="flex items-start">
+                                    <div class="p-3 bg-indigo-500/20 rounded-xl mr-4 flex-shrink-0">
+                                        <i data-lucide="users" class="w-6 h-6 text-indigo-300"></i>
+                                    </div>
+                                    <p class="text-indigo-100 leading-relaxed font-light text-sm md:text-base">
+                                        Estos beneficios son dirigidos a administrativos y docentes de Educación Superior, Centro Laborem, Cibercolegio UCN y colaboradores de Vallenevado – Casa de Encuentros.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="group glass-panel !bg-white/5 !border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                                <div class="flex items-start">
+                                    <div class="p-3 bg-rose-500/20 rounded-xl mr-4 flex-shrink-0">
+                                        <i data-lucide="alert-circle" class="w-6 h-6 text-rose-300"></i>
+                                    </div>
+                                    <p class="text-indigo-100 leading-relaxed font-light text-sm md:text-base">
+                                        Los beneficios no son acumulables ni transferibles.<br/><br/>
+                                        Aprendices y practicantes acceden únicamente a los beneficios de <strong>Cumpleaños y Graduación.</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 flex flex-col justify-center">
+                            <div class="group glass-panel !bg-indigo-600/30 !border-indigo-400/30 p-6 rounded-2xl hover:bg-indigo-600/50 transition-colors">
+                                <div class="flex items-start">
+                                    <div class="p-3 bg-indigo-400/20 rounded-xl mr-4 flex-shrink-0 shadow-inner">
+                                        <i data-lucide="calendar" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                    <p class="text-white leading-relaxed text-sm md:text-base">
+                                        Todos los beneficios deben coordinarse previamente con el jefe inmediato y solicitarse a través de la <strong>App del Colaborador.</strong>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-cyan-500 to-blue-600 p-1 rounded-2xl shadow-[0_0_30px_rgba(6,182,212,0.3)] animate-pulse-glow">
+                                <div class="bg-slate-900 rounded-xl p-6 flex items-center justify-between">
+                                    <span class="text-cyan-400 font-bold uppercase tracking-widest text-sm">Vigencia</span>
+                                    <span class="text-white font-black text-lg">hasta el 31 de diciembre de 2026</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+    
+    <!-- Footer minimalista -->
+    <footer class="text-center pb-12 pt-6 text-slate-400 text-sm font-medium relative z-20">
+        <p id="copyright-year"></p>
+    </footer>
+
+    <!-- Scripts Javascript (Lógica de la Aplicación) -->
+    <script>
+        // Data Principal de Beneficios
+        const mainBenefits = [
+            {
+                id: 'cumpleanos',
+                title: 'Día de Cumpleaños',
+                value: '1 día libre',
+                icon3d: 'https://img.icons8.com/fluency/256/birthday-cake.png',
+                animClass: 'animate-float-icon',
+                color: 'from-rose-400 to-rose-500 shadow-rose-300/50',
+                cardBg: 'bg-gradient-to-br from-rose-100/90 via-white to-rose-50',
+                badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+                borderColor: 'border-rose-200 hover:border-rose-400',
+                titleColor: 'text-rose-950 group-hover:text-rose-700',
+                roles: ['colaborador', 'aprendiz'],
+                description: 'La UCN celebra tu cumpleaños otorgándote un día especial para agradecer por el don de existencia.',
+                conditions: [
+                    'Se disfruta en la fecha exacta.',
+                    'Si coincide con festivo, fin de semana o no es posible por motivos laborales, podrá usarse dentro de los 8 días siguientes (previa coordinación con el jefe).',
+                    'No aplica si se presenta durante vacaciones o recesos institucionales.'
+                ],
+                appliesToText: 'Colaboradores, aprendices y practicantes.'
+            },
+            {
+                id: 'graduacion',
+                title: 'Graduación',
+                value: '1 día libre',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Graduation%20Cap.png',
+                animClass: 'animate-wiggle-icon',
+                color: 'from-blue-400 to-blue-500 shadow-blue-300/50',
+                cardBg: 'bg-gradient-to-br from-blue-100/90 via-white to-blue-50',
+                badgeColor: 'bg-blue-100 text-blue-800 border-blue-200',
+                borderColor: 'border-blue-200 hover:border-blue-400',
+                titleColor: 'text-blue-950 group-hover:text-blue-700',
+                roles: ['colaborador', 'aprendiz'],
+                description: 'Se reconoce el logro alcanzado en tu formación académica.',
+                conditions: [
+                    'Se disfruta el día exacto de la graduación.',
+                    'No se otorga de manera anticipada ni prorrogada (solo aplica en días hábiles laborales).',
+                    'Se debe remitir el acta de grado a: gestionhumana@ucn.edu.co'
+                ],
+                appliesToText: 'Colaboradores, aprendices y practicantes.'
+            },
+            {
+                id: 'boda',
+                title: 'Boda',
+                value: '3 días libres',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Ring.png',
+                animClass: 'animate-heartbeat-icon',
+                color: 'from-pink-400 to-pink-500 shadow-pink-300/50',
+                cardBg: 'bg-gradient-to-br from-pink-100/90 via-white to-pink-50',
+                badgeColor: 'bg-pink-100 text-pink-800 border-pink-200',
+                borderColor: 'border-pink-200 hover:border-pink-400',
+                titleColor: 'text-pink-950 group-hover:text-pink-700',
+                roles: ['colaborador'],
+                description: 'Un espacio para celebrar el amor y los nuevos comienzos.',
+                conditions: [
+                    'Se puede disfrutar antes o después del matrimonio.'
+                ],
+                appliesToText: 'Únicamente para colaboradores.'
+            },
+            {
+                id: 'nacimiento',
+                title: 'Bono por Nacimiento',
+                value: '$200.000 COP',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Baby.png',
+                color: 'from-emerald-400 to-emerald-500 shadow-emerald-300/50',
+                cardBg: 'bg-gradient-to-br from-emerald-100/90 via-white to-emerald-50',
+                badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                borderColor: 'border-emerald-200 hover:border-emerald-400',
+                titleColor: 'text-emerald-950 group-hover:text-emerald-700',
+                roles: ['colaborador'],
+                description: 'Aplica para padres y madres con ocasión del nacimiento de un hijo o hija.',
+                conditions: [
+                    'Se genera con la notificación de la licencia de maternidad o paternidad por parte de Gestión Humana.',
+                    'Si ambos padres son colaboradores, el beneficio se otorga solo a uno de los dos.'
+                ],
+                appliesToText: 'Únicamente para colaboradores.'
+            },
+            {
+                id: 'parques',
+                title: 'Parques Comfama / Comfenalco',
+                value: 'Tiempo no laboral',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Ferris%20Wheel.png',
+                color: 'from-teal-400 to-teal-500 shadow-teal-300/50',
+                cardBg: 'bg-gradient-to-br from-teal-100/90 via-white to-teal-50',
+                badgeColor: 'bg-teal-100 text-teal-800 border-teal-200',
+                borderColor: 'border-teal-200 hover:border-teal-400',
+                titleColor: 'text-teal-950 group-hover:text-teal-700',
+                roles: ['colaborador'],
+                description: 'Disfruta espacios de descanso y diversión en familia.',
+                conditions: [
+                    'Solicita la carta de acceso al buzón: gestionhumana@ucn.edu.co',
+                    'Indica la caja de compensación a la que estás afiliado (Comfama y/o Comfenalco).',
+                    'Indica en la carta los nombres y documentos de los acompañantes.'
+                ],
+                appliesToText: 'Únicamente para colaboradores.'
+            },
+            {
+                id: 'ninos',
+                title: 'Día de los Niños',
+                value: 'Salida 2:00 p.m. (31 Oct)',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Party%20Popper.png',
+                color: 'from-orange-400 to-orange-500 shadow-orange-300/50',
+                cardBg: 'bg-gradient-to-br from-orange-100/90 via-white to-orange-50',
+                badgeColor: 'bg-orange-100 text-orange-800 border-orange-200',
+                borderColor: 'border-orange-200 hover:border-orange-400',
+                titleColor: 'text-orange-950 group-hover:text-orange-700',
+                roles: ['colaborador'],
+                description: 'Más tiempo para compartir y crear recuerdos.',
+                conditions: [
+                    'Aplica para madres y padres con hijos entre 0 meses y 12 años.',
+                    'Adjuntar documento de identificación del menor.'
+                ],
+                appliesToText: 'Únicamente para colaboradores.'
+            },
+            {
+                id: 'familia',
+                title: 'Día para la Familia',
+                value: '1 día libre al año',
+                icon3d: 'https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Family.png',
+                color: 'from-purple-400 to-purple-500 shadow-purple-300/50',
+                cardBg: 'bg-gradient-to-br from-purple-100/90 via-white to-purple-50',
+                badgeColor: 'bg-purple-100 text-purple-800 border-purple-200',
+                borderColor: 'border-purple-200 hover:border-purple-400',
+                titleColor: 'text-purple-950 group-hover:text-purple-700',
+                roles: ['colaborador'],
+                description: 'Una pausa para compartir con quienes más quieres.',
+                conditions: [
+                    'Para hacer uso del día, coordínalo con tu jefe inmediato.'
+                ],
+                appliesToText: 'Únicamente para colaboradores.'
+            }
+        ];
+
+        // Data Otros Beneficios
+        const otherBenefits = [
+            { text: "Kit de ingreso y bienvenida institucional", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Backpack.png", color: "from-blue-400 to-blue-600" },
+            { text: "Inserción a la experiencia UCN", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png", color: "from-purple-400 to-purple-600" },
+            { text: "Asesorías: Psicológicas, psicopedagógicas, espirituales, laborales, orientación vocacional, acompañamiento jurídico.", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Speech%20Balloon.png", color: "from-emerald-400 to-emerald-600" },
+            { text: "Apoyo educativo para cualificación (becas y descuentos para estudio luego de un año laboral en la Institución)", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Books.png", color: "from-amber-400 to-orange-500" },
+            { text: "Opción de Teletrabajo", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Laptop.png", color: "from-cyan-400 to-blue-500" },
+            { text: "Acompañamiento a los pre-pensionados PRODAP", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Sunrise.png", color: "from-orange-400 to-red-500" },
+            { text: "Capacitación y formación", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Brain.png", color: "from-pink-400 to-rose-500" },
+            { text: "Promoción y prevención - PYP", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Stethoscope.png", color: "from-teal-400 to-emerald-600" },
+            { text: "Tienda virtual UCN", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Shopping%20Cart.png", color: "from-indigo-400 to-purple-600" },
+            { text: "Celebraciones: Eucaristía diaria, Oración Institucional, Campañas de autocuidado, Calculadora IMC, Tabla periódica de las emociones, Salud UCN: Enciclopedia medica Retiro espiritual, Voluntariado, Calculadora de huella de carbono, Día de la mujer, Día de la madre, Día del padre, Día del docente, San José, amor y amistad, encuentro de parejas, Integración de navidad, entre otros espacios.", icon3d: "https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Activities/Confetti%20Ball.png", color: "from-fuchsia-400 to-pink-600" }
+        ];
+
+        // Opciones de Filtrado
+        const filterOptions = [
+            { id: 'todos', label: 'Todos los beneficios' },
+            { id: 'colaborador', label: 'Solo Colaboradores' },
+            { id: 'aprendiz', label: 'Aprendices y Practicantes' }
+        ];
+
+        let currentFilter = 'todos';
+
+        // Set Copyright Year dynamically
+        document.getElementById('copyright-year').textContent = `© ${new Date().getFullYear()} UCN - Gestión Humana`;
+
+        // Modificar el Filtro
+        window.setFilter = function(filterId) {
+            currentFilter = filterId;
+            renderFilterButtons();
+            renderMainBenefits();
+        };
+
+        // Renderizar Botones de Filtro
+        function renderFilterButtons() {
+            const container = document.getElementById('filter-buttons');
+            container.innerHTML = filterOptions.map(btn => {
+                const isActive = currentFilter === btn.id;
+                const baseClasses = "relative overflow-hidden px-8 py-4 rounded-2xl text-sm md:text-base font-bold transition-all duration-300 transform active:scale-95";
+                const activeClasses = "bg-gradient-to-br from-indigo-600 to-purple-700 text-white border-transparent active-filter-btn ring-2 ring-indigo-400 ring-offset-2 ring-offset-[#f4f7f9]";
+                const inactiveClasses = "bg-white text-slate-600 border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50 hover:shadow-[0_0_20px_rgba(99,102,241,0.3)]";
+                
+                const pingEffect = isActive ? `<div class="absolute inset-0 bg-white/40 animate-ping rounded-2xl" style="animation-duration: 0.4s; animation-iteration-count: 1;"></div>` : '';
+
+                return `
+                    <button onclick="setFilter('${btn.id}')" class="${baseClasses} ${isActive ? activeClasses : inactiveClasses}">
+                        ${pingEffect}
+                        <span class="relative z-10">${btn.label}</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // Renderizar Tarjetas de Beneficios Principales
+        function renderMainBenefits() {
+            const container = document.getElementById('benefits-grid');
+            const filtered = mainBenefits.filter(benefit => currentFilter === 'todos' || benefit.roles.includes(currentFilter));
+            
+            container.innerHTML = filtered.map(benefit => `
+                <div class="card-3d-hover rounded-[2rem] p-8 relative overflow-hidden group border-2 transition-colors duration-300 ${benefit.cardBg} ${benefit.borderColor} shadow-lg">
+                    <!-- Elementos de diseño de fondo más grandes y coloridos -->
+                    <div class="absolute -right-12 -top-12 w-48 h-48 rounded-full opacity-20 bg-gradient-to-br ${benefit.color} group-hover:scale-[1.5] transition-transform duration-700 blur-2xl"></div>
+                    <div class="absolute -left-12 -bottom-12 w-40 h-40 rounded-full opacity-20 bg-gradient-to-tr ${benefit.color} group-hover:scale-[1.5] transition-transform duration-700 blur-xl"></div>
+                    
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="flex items-start justify-between mb-8">
+                            <!-- Contenedor del ícono vibrante -->
+                            <div class="w-20 h-20 rounded-3xl flex items-center justify-center p-3 shadow-xl bg-gradient-to-br ${benefit.color} transform group-hover:-rotate-6 group-hover:scale-110 transition-all duration-300 border border-white/20">
+                                <img src="${benefit.icon3d}" alt="${benefit.title}" class="w-full h-full object-contain drop-shadow-[0_10px_10px_rgba(0,0,0,0.3)] ${benefit.animClass || ''}" />
+                            </div>
+                            <!-- Etiqueta colorida -->
+                            <span class="text-xs font-extrabold px-4 py-2.5 rounded-xl shadow-sm border backdrop-blur-sm ${benefit.badgeColor} transform group-hover:translate-y-1 transition-transform">
+                                ${benefit.value}
+                            </span>
+                        </div>
+                        
+                        <h3 class="text-3xl font-black mb-4 tracking-tight transition-colors ${benefit.titleColor}">
+                            ${benefit.title}
+                        </h3>
+                        <p class="text-slate-600/90 text-[15px] mb-8 flex-grow leading-relaxed font-semibold">
+                            ${benefit.description}
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <!-- Caja de condiciones translúcida y limpia -->
+                            <div class="bg-white/60 backdrop-blur-md rounded-2xl p-5 border border-white shadow-[0_4px_15px_-5px_rgba(0,0,0,0.05)]">
+                                <h4 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center">
+                                    <i data-lucide="sparkles" class="w-3.5 h-3.5 mr-2 text-indigo-400"></i> Condiciones
+                                </h4>
+                                <ul class="space-y-3">
+                                    ${benefit.conditions.map(cond => `
+                                        <li class="flex items-start text-sm text-slate-700 leading-snug font-medium">
+                                            <i data-lucide="check-circle" class="w-[18px] h-[18px] text-indigo-400 mr-2.5 mt-0.5 flex-shrink-0"></i>
+                                            <span>${cond}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                            
+                            <!-- Aplica a... -->
+                            <div class="flex items-center text-xs font-bold text-slate-600 bg-white/80 p-4 rounded-xl shadow-sm border border-white">
+                                <i data-lucide="briefcase" class="w-4 h-4 mr-3 text-indigo-500"></i>
+                                ${benefit.appliesToText}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Recargar Iconos Lucide cada vez que inyectamos nuevo HTML
+            lucide.createIcons();
+        }
+
+        // Renderizar Lista de Otros Beneficios
+        function renderOtherBenefits() {
+            const container = document.getElementById('other-benefits-grid');
+            container.innerHTML = otherBenefits.map(item => `
+                <div class="bg-white/60 backdrop-blur-md p-5 rounded-2xl flex items-start group hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] border border-white hover:border-indigo-100 relative overflow-hidden">
+                    <!-- Destello de color al hacer hover -->
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-br ${item.color} transition-opacity duration-300"></div>
+                    
+                    <div class="w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mr-4 flex-shrink-0 shadow-lg group-hover:rotate-12 group-hover:scale-110 transition-all duration-500 relative">
+                        <div class="absolute inset-1 bg-white/20 rounded-xl backdrop-blur-sm"></div>
+                        <img src="${item.icon3d}" alt="icon" class="w-8 h-8 object-contain relative z-10 drop-shadow-md group-hover:animate-pulse" />
+                    </div>
+                    <span class="text-slate-700 text-sm font-semibold leading-relaxed pt-2 group-hover:text-slate-900 transition-colors relative z-10">${item.text}</span>
+                </div>
+            `).join('');
+        }
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            renderFilterButtons();
+            renderMainBenefits();
+            renderOtherBenefits();
+            
+            // Inicializar Lucide Icons
+            lucide.createIcons();
+
+            // Animación de entrada inicial del Header
+            setTimeout(() => {
+                const headerContent = document.getElementById('header-content');
+                headerContent.classList.remove('translate-y-10', 'opacity-0');
+                headerContent.classList.add('translate-y-0', 'opacity-100');
+            }, 100);
+
+            // Slider de imágenes del banner
+            const sliderImages = document.querySelectorAll('.slider-img');
+            let currentImageIdx = 0;
+            
+            if (sliderImages.length > 0) {
+                setInterval(() => {
+                    // Ocultar imagen actual (se desvanece y achica)
+                    sliderImages[currentImageIdx].classList.remove('opacity-100', 'scale-105');
+                    sliderImages[currentImageIdx].classList.add('opacity-0', 'scale-100');
+                    
+                    // Calcular siguiente índice
+                    currentImageIdx = (currentImageIdx + 1) % sliderImages.length;
+                    
+                    // Mostrar nueva imagen (aparece y hace zoom sutil)
+                    sliderImages[currentImageIdx].classList.remove('opacity-0', 'scale-100');
+                    sliderImages[currentImageIdx].classList.add('opacity-100', 'scale-105');
+                }, 5000); // Cambia de imagen cada 5 segundos
+            }
+        });
+    </script>
+</body>
+</html>
