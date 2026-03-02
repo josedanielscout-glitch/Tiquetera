@@ -85,6 +85,22 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
         
+        /* Barra de Scroll Creativa */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f7f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #6366f1, #a855f7, #06b6d4);
+            border-radius: 10px;
+            border: 3px solid #f4f7f9;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #4f46e5, #9333ea, #0891b2);
+        }
+
         /* Esferas 3D CSS */
         .sphere-3d {
             background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 60%, transparent 80%);
@@ -112,9 +128,9 @@
         <div class="absolute top-1/4 left-10 w-32 h-32 bg-indigo-500/30 rounded-full blur-xl z-0"></div>
         <div class="absolute bottom-1/4 right-20 w-48 h-48 bg-purple-500/30 rounded-full blur-2xl z-0"></div>
         
-        <!-- Esfera 3D decorativa -->
+        <!-- Esferas 3D decorativas (Corregida la esfera inferior para que resalte sobre la ola) -->
         <div class="absolute top-20 right-1/4 w-24 h-24 bg-gradient-to-br from-pink-400 to-indigo-600 sphere-3d z-10 opacity-80"></div>
-        <div class="absolute bottom-10 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 sphere-3d z-10 opacity-70"></div>
+        <div class="absolute bottom-16 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 sphere-3d z-20 opacity-90 shadow-lg"></div>
 
         <div id="header-content" class="relative z-20 text-center max-w-4xl px-6 transition-all duration-1000 transform translate-y-10 opacity-0">
             <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-cyan-100 drop-shadow-sm">
@@ -204,24 +220,24 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="space-y-6 flex flex-col justify-center">
-                            <div class="group bg-indigo-50/80 p-6 rounded-2xl border border-indigo-100 hover:bg-indigo-100/80 hover:shadow-md transition-all">
+                            <div class="group glass-panel !bg-indigo-600/30 !border-indigo-400/30 p-6 rounded-2xl hover:bg-indigo-600/50 transition-colors">
                                 <div class="flex items-start">
-                                    <div class="p-3 bg-white rounded-xl mr-4 flex-shrink-0 shadow-sm text-indigo-600">
-                                        <i data-lucide="calendar" class="w-6 h-6"></i>
+                                    <div class="p-3 bg-indigo-400/20 rounded-xl mr-4 flex-shrink-0 shadow-inner">
+                                        <i data-lucide="calendar" class="w-6 h-6 text-white"></i>
                                     </div>
-                                    <p class="text-indigo-900 leading-relaxed font-medium text-sm md:text-base">
-                                        Todos los beneficios deben coordinarse previamente con el jefe inmediato y solicitarse a través de la <strong class="text-indigo-950 font-extrabold">App del Colaborador.</strong>
+                                    <p class="text-white leading-relaxed text-sm md:text-base">
+                                        Todos los beneficios deben coordinarse previamente con el jefe inmediato y solicitarse a través de la <strong>App del Colaborador.</strong>
                                     </p>
                                 </div>
                             </div>
                             
-                            <div class="bg-gradient-to-r from-cyan-400 to-blue-500 p-1 rounded-2xl shadow-[0_10px_20px_rgba(6,182,212,0.2)] animate-pulse-glow">
-                                <div class="bg-white rounded-xl p-6 flex items-center justify-between">
-                                    <span class="text-cyan-600 font-bold uppercase tracking-widest text-sm">Vigencia</span>
-                                    <span class="text-slate-800 font-black text-lg md:text-xl">hasta el 31 de diciembre de 2026</span>
+                            <!-- Caja de vigencia elegante, sin animación parpadeante -->
+                            <div class="bg-slate-800/80 border border-cyan-500/30 p-6 rounded-2xl shadow-sm hover:shadow-md hover:border-cyan-400/50 transition-all">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-cyan-400 font-bold uppercase tracking-widest text-sm flex items-center gap-2">
+                                        <i data-lucide="clock" class="w-4 h-4"></i> Vigencia
+                                    </span>
+                                    <span class="text-white font-black text-lg md:text-xl text-right ml-4">hasta el 31 de diciembre de 2026</span>
                                 </div>
                             </div>
                         </div>
